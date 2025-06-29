@@ -2,6 +2,8 @@ package com.becoder.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	@PostMapping("/save-product")
-	public ResponseEntity<?> saveProduct(@ RequestBody ProductDto productDto){
+	public ResponseEntity<?> saveProduct(@RequestBody @Valid ProductDto productDto){
 		
 		try {
 			Boolean saveProduct = productService.saveProduct(productDto);
