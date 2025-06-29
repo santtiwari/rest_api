@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.becoder.dto.ProductDto;
@@ -27,16 +28,22 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	@PostMapping("/save-product")
-	public ResponseEntity<?> saveProduct(@RequestBody @Valid ProductDto productDto){
+	//@Valid
+	public ResponseEntity<?> saveProduct(@RequestBody ProductDto productDto){
+		
 		
 		try {
+			validationProduct(productDto);
 			Boolean saveProduct = productService.saveProduct(productDto);
 			if(!saveProduct)
 			{
 				return new ResponseEntity<>("Product is not saved", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			
-		} catch (Exception e) {
+		} catch (BadRequestException e) {
+			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+		catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
@@ -44,6 +51,36 @@ public class ProductController {
 		return new ResponseEntity<>("saved Product", HttpStatus.CREATED);
 	}
 	
+	private void validationProduct(ProductDto productDto)throws BadRequestException {
+		if(productDto.getName()!= null && productDto.getName().isEmpty()) {
+			throw new BadRequestException("name feild is empty");
+		}
+		if(productDto.getName()== null) {
+			throw new BadRequestException("name feild is null");
+		}
+		
+		if(productDto.getDescription()!= null && productDto.getDescription().isEmpty()) {
+			throw new BadRequestException("description feild is empty");
+		}
+		if(productDto.getDescription()== null) {
+			throw new BadRequestException("description feild is null");
+		}
+		if(productDto.getDescription()!= null && !productDto.getDescription().isEmpty() && productDto.getDescription().length()<3 || productDto.getDescription().length()> 10) {
+			throw new BadRequestException("description feild min and max size are 3 to 10");
+		}
+		
+	}
+	
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public class BadRequestException extends RuntimeException {
+	    
+	    public BadRequestException(String message) {
+	        super(message);
+	    }
+	}
+
+
 	@GetMapping("/products")
 	public ResponseEntity<?> getProducts(){
 		List <ProductDto> allProducts= null;

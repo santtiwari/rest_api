@@ -1,26 +1,26 @@
 package com.becoder.dto;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+//import javax.validation.constraints.Email;
+//import javax.validation.constraints.NotBlank;
+//import javax.validation.constraints.NotEmpty;
+//import javax.validation.constraints.Pattern;
+//import javax.validation.constraints.Size;
 
 public class ProductDto {
 	
 	private Integer id;
-	@NotBlank
+	//@NotBlank
 	private  String name;
-	@NotEmpty
-	@Size(min = 3,max = 10,message = "description min and max size 3-10")
+	//@NotEmpty
+	//@Size(min = 3,max = 10,message = "description min and max size 3-10")
 	private String description;
 	
-	@Pattern(regexp = "^[0-9]*$", message = "invalid price")
+	//@Pattern(regexp = "^[0-9]*$", message = "invalid price")
 	private String price;
 	
 	private Integer quantity;
 	
-	@Email(message = "invalid email type")
+	//@Email(message = "invalid email type")
 	private String email;
 	
 
