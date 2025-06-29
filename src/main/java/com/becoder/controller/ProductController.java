@@ -94,7 +94,10 @@ public class ProductController {
 	@RequestParam(name = "sortDir", defaultValue = "asc")String sortDir)
 	{
 		ProductResponsePageNat productResponse = null;
+		String name =null;
+		name.toUpperCase();
 		try {
+			
 	productResponse = productService.getProductsWithPagenation(pageNo, pageSize, sortBy, sortDir);
 			if(ObjectUtils.isEmpty(productResponse)) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -105,5 +108,6 @@ public class ProductController {
 		return new ResponseEntity<>(productResponse,HttpStatus.OK);
 		
 	}
+	
 	
 }
